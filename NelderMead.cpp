@@ -1,4 +1,4 @@
-#include "HeaderAss8.h"
+#include "Opt.h"
 using namespace std;
 
 void MinFunc(SODE *Ass3) {
@@ -9,8 +9,13 @@ void MinFunc(SODE *Ass3) {
 	vector<double> smplxsumv(Ass3->ldims + 1);
 	double* smplxsum = &smplxsumv[0];
 
-	vector<double> yv(Ass3->ldims);
+	vector<double> yv(Ass3->ldims+1);
 	double* y = &yv[0];
+	/*double* smplxsum;
+	smplxsum = (double*)malloc(Ass3->ldims+1);*/
+
+	/*double* y;
+	y = (double*)malloc(Ass3->ldims);*/
 
 	for (i = 0; i <= Ass3->ldims; i++) {
 		for (j = 0; j <= Ass3->ldims - 1;j++) {
