@@ -4,8 +4,8 @@ class SODE
 public:
 	SODE();
 	~SODE();
-	static const int dims = 4;
-	static const int ldims = 2;
+	static const int dims = 10;
+	static const int ldims = 5;
 	double x[dims];
 	double init[dims];
 	double dx[dims];
@@ -17,9 +17,9 @@ public:
 	void func(double[]);
 	double Err(void);
 
-	double h = 0.01;
+	double h = 0.001;
 	double t0 = 0;
-	double t1 = 4;
+	double t1 = 3.14;
 
 	double J;
 };
