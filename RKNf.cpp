@@ -2,7 +2,7 @@
 using namespace std;
 void RKf(SODE *Ass3) {
 	int n,i, j;
-	double *kp;
+	//double *kp;
 	double t;
 	double res;
 	res = 0;
@@ -14,7 +14,7 @@ void RKf(SODE *Ass3) {
 
 	//File
 	FILE *cfptr;
-	const char *fle = "Ass8.csv";
+	const char *fle = "Exam_UnCon.csv";
 
 	if ((fopen_s(&cfptr, fle, "w")) == NULL) {
 		cout << "Error creating file->" << endl;
@@ -34,7 +34,7 @@ void RKf(SODE *Ass3) {
 	for (i = 0; i <= Ass3->dims - 1; i++)	Ass3->dx[i] = 0;
 	for (i = 0; i <= Ass3->dims - 1; i++)	xsum[i] = Ass3->init[i];
 
-	res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl * Ass3->ctrl);
+	res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl0 * Ass3->ctrl0); //TODO
 
 	n = int((Ass3->t1 - Ass3->t0) / Ass3->h);
 	for (i = 0; i <= Ass3->dims-1; i++)	Ass3->x[i] = Ass3->init[i];
@@ -44,7 +44,7 @@ void RKf(SODE *Ass3) {
 		Ass3->dx[i] = 0;
 	}
 	//cout << t << "\tx1 = " << Ass3->x[0] << "\tl1 = " << Ass3->x[1] << endl;
-	fprintf(cfptr, "%g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->ctrl);
+	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g , %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
 
 	for (i = 1; i <= n; i++) {
 	//	cout << "t = " << t << "\nx0 = " << Ass3->x[0] << "\tx1 = " << Ass3->x[1] << "\tx2 = " << Ass3->x[2] 
@@ -90,8 +90,8 @@ void RKf(SODE *Ass3) {
 		}
 		
 		t = t + Ass3->h;
-		res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl * Ass3->ctrl);
-		fprintf(cfptr, "%g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->ctrl);
+		res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl0 * Ass3->ctrl0); //TODO
+		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g , %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
 		
 	}
 	fclose(cfptr);

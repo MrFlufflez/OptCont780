@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstring>
 #include <string>
+#include <time.h>
 
 //#define CONSTRAINED
 using namespace std;
@@ -15,4 +16,4 @@ void RKf(SODE *Ass3);
 //void func(double dx[], double x[]);//
 
 double evaluate(SODE *Ass3);
-void sort(double *arr, double smplx[6][5], int size);
+void sort(double *arr, double smplx[7][6], int size);

@@ -3,8 +3,12 @@ using namespace std;
 
 double evaluate(SODE *Ass3) {
 	double E = 0;
-	Ass3->x[0] = 1;
-	Ass3->x[1] = 1;
+	Ass3->x[0] = 0;
+	Ass3->x[1] = 14;
+	Ass3->x[2] = 0;
+	Ass3->x[3] = 2.5;
+	Ass3->x[4] = 0;
+	Ass3->x[5] = 0;
 
 	RK(Ass3);
 
@@ -13,7 +17,7 @@ double evaluate(SODE *Ass3) {
 	return E;
 }
 
-void sort(double *arr, double smplx[6][5], int size) {
+void sort(double *arr, double smplx[7][6], int size) {
 	double temp;
 	double ts[5];
 	int j,i,k;
@@ -40,7 +44,7 @@ void sort(double *arr, double smplx[6][5], int size) {
 }
 
 int main(void) {
-	const int len = 6;
+	const int len = 7;
 	bool check = false;
 	string temp;
 	SODE Ass3;
@@ -51,13 +55,26 @@ int main(void) {
 	double E[len], E_min, E_new;
 	double smplx[len][len-1];
 
+	srand(time(NULL));
+
 	for (i = 0; i <= Ass3.dims - 1; i++) Ass3.init[i] = 0; //initialization variables
-	
-	for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //clear variables
+	Ass3.init[0] = 0;
+	Ass3.init[1] = 14;
+	Ass3.init[2] = 0;
+	Ass3.init[3] = 2.5;
+	Ass3.init[4] = 0;
+	Ass3.init[5] = 0;
+	for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //clear final values and change to initial
+	Ass3.x[0] = 0;
+	Ass3.x[1] = 14;
+	Ass3.x[2] = 0;
+	Ass3.x[3] = 2.5;
+	Ass3.x[4] = 0;
+	Ass3.x[5] = 0;
 
 	for (i = 0; i <= len-1; i++) E[i] = 0;
 
-	for (j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = rand();
+	for (j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand() / 100000.0);
 	E[0] = evaluate(ptrAss3);
 	for (j = 0; j <= Ass3.ldims-1; j++) smplx[0][j] = Ass3.init[Ass3.ldims + j];
 
@@ -70,7 +87,7 @@ int main(void) {
 	for (i = 0; i <= 10000; i++) {
 		E_min = E[len - 1];
 		check = false;
-		for( j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand()/1000.0);
+		for( j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand()/100000.0);
 		E_new = evaluate(ptrAss3);
 
 		if (E_new < E_min) {
@@ -144,7 +161,19 @@ int main(void) {
 
 
 		for (i = 0; i <= Ass3.dims - 1; i++) Ass3.init[i] = 0; //initialization variables
-		for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //final values
+		Ass3.init[0] = 0;
+		Ass3.init[1] = 14;
+		Ass3.init[2] = 0;
+		Ass3.init[3] = 2.5;
+		Ass3.init[4] = 0;
+		Ass3.init[5] = 0;
+		for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //clear final values and change to initial
+		Ass3.x[0] = 0;
+		Ass3.x[1] = 14;
+		Ass3.x[2] = 0;
+		Ass3.x[3] = 2.5;
+		Ass3.x[4] = 0;
+		Ass3.x[5] = 0;
 
 		//RK(Ass3);
 		//Err(x);
@@ -159,7 +188,8 @@ int main(void) {
 		cout << "\nx0 = " << ptrAss3->x[0] << "\tx1 = " << ptrAss3->x[1]
 			<< endl;
 
-		ptrAss3->ctrl = 0;
+		ptrAss3->ctrl0 = 0;
+		ptrAss3->ctrl1 = 0;
 
 		RKf(ptrAss3);
 
