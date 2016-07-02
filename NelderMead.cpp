@@ -3,6 +3,7 @@ using namespace std;
 
 void MinFunc(SODE *Ass3) {
 	int i, j, highest, ilowest, sechigh, dimsp, nfunc, k;
+	int max_iter = 100000;
 	double tolfunc, tolr, sum, swap, ytemp, err;
 	double insig = 1.0e-10;
 	
@@ -69,7 +70,7 @@ void MinFunc(SODE *Ass3) {
 			break;
 		}
 		//is max exceeded? >> end calc
-		if (nfunc >= 10000) {
+		if (nfunc >= max_iter) {
 			cout << "Max exceeded." << endl;
 			break;
 		}

@@ -1,11 +1,18 @@
 #pragma once
+#define CONSTRAINED
 class SODE
 {
 public:
 	SODE();
 	~SODE();
+#ifndef CONSTRAINED
 	static const int dims = 12;
 	static const int ldims = 6;
+#endif
+#ifdef CONSTRAINED
+	static const int dims = 14;
+	static const int ldims = 7;
+#endif
 	double x[dims];
 	double init[dims];
 	double dx[dims];
@@ -18,7 +25,7 @@ public:
 	void func(double[]);
 	double Err(void);
 
-	double h = 0.01;
+	double h = 0.001;
 	double t0 = 0;
 	double t1 = 6;
 

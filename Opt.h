@@ -6,7 +6,6 @@
 #include <string>
 #include <time.h>
 
-//#define CONSTRAINED
 using namespace std;
 
 void MinFunc(SODE *Ass3);
@@ -16,4 +15,9 @@ void RKf(SODE *Ass3);
 //void func(double dx[], double x[]);//
 
 double evaluate(SODE *Ass3);
+#ifndef CONSTRAINED
 void sort(double *arr, double smplx[7][6], int size);
+#endif
+#ifdef CONSTRAINED
+void sort(double *arr, double smplx[8][7], int size);
+#endif

@@ -13,14 +13,24 @@ void RKf(SODE *Ass3) {
 	vector<double> dxsavev(Ass3->dims);
 
 	//File
+#ifndef CONSTRAINED
 	FILE *cfptr;
-	const char *fle = "Exam_UnCon.csv";
+	const char *fle = "Exam_unCon.csv";
 
 	if ((fopen_s(&cfptr, fle, "w")) == NULL) {
 		cout << "Error creating file->" << endl;
 	}
 	//end file
-	
+#endif
+#ifdef CONSTRAINED
+	FILE *cfptr;
+	const char *fle = "Exam_Con.csv";
+
+	if ((fopen_s(&cfptr, fle, "w")) == NULL) {
+		cout << "Error creating file->" << endl;
+	}
+	//end file
+#endif
 	t = Ass3->t0;
 	double* k0 = &kv[0][0];
 	double* k1 = &kv[1][0];
@@ -44,8 +54,12 @@ void RKf(SODE *Ass3) {
 		Ass3->dx[i] = 0;
 	}
 	//cout << t << "\tx1 = " << Ass3->x[0] << "\tl1 = " << Ass3->x[1] << endl;
-	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g , %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
-
+#ifndef CONSTRAINED
+	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
+#endif
+#ifdef CONSTRAINED
+	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->ctrl0, Ass3->ctrl1);
+#endif
 	for (i = 1; i <= n; i++) {
 	//	cout << "t = " << t << "\nx0 = " << Ass3->x[0] << "\tx1 = " << Ass3->x[1] << "\tx2 = " << Ass3->x[2] 
 	//			<< "\tx3 = " << Ass3->x[3] << "\tx4 = " << Ass3->x[4] << "\nl0 = " << Ass3->x[5] << "\tl1 = " << Ass3->x[6] 
@@ -91,7 +105,12 @@ void RKf(SODE *Ass3) {
 		
 		t = t + Ass3->h;
 		res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl0 * Ass3->ctrl0); //TODO
-		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g , %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
+#ifndef CONSTRAINED
+		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
+#endif
+#ifdef CONSTRAINED
+		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->ctrl0, Ass3->ctrl1);
+#endif
 		
 	}
 	fclose(cfptr);

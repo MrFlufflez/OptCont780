@@ -16,7 +16,7 @@ double evaluate(SODE *Ass3) {
 
 	return E;
 }
-
+#ifndef CONSTRAINED
 void sort(double *arr, double smplx[7][6], int size) {
 	double temp;
 	double ts[5];
@@ -42,9 +42,42 @@ void sort(double *arr, double smplx[7][6], int size) {
 		}
 	}
 }
+#endif
+#ifdef CONSTRAINED
+void sort(double *arr, double smplx[8][7], int size) {
+	double temp;
+	double ts[5];
+	int j, i, k;
+
+	for (i = 0; i < (size - 1); ++i)
+	{
+		for (j = 0; j < size - 1 - i; ++j)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				temp = arr[j + 1];
+				arr[j + 1] = arr[j];
+				arr[j] = temp;
+
+				for (k = 0; k <= 5 - 1; k++) {
+					ts[k] = smplx[j + 1][k];
+					smplx[j + 1][k] = smplx[j][k];
+					smplx[j][k] = ts[k];
+				}
+
+			}
+		}
+	}
+}
+#endif
 
 int main(void) {
+#ifndef CONSTRAINED
 	const int len = 7;
+#endif
+#ifdef CONSTRAINED
+	const int len = 8;
+#endif
 	bool check = false;
 	string temp;
 	SODE Ass3;
@@ -57,6 +90,8 @@ int main(void) {
 
 	srand(time(NULL));
 
+	Ass3.h = 0.001;
+
 	for (i = 0; i <= Ass3.dims - 1; i++) Ass3.init[i] = 0; //initialization variables
 	Ass3.init[0] = 0;
 	Ass3.init[1] = 14;
@@ -64,6 +99,9 @@ int main(void) {
 	Ass3.init[3] = 2.5;
 	Ass3.init[4] = 0;
 	Ass3.init[5] = 0;
+#ifdef CONSTRAINED
+	Ass3.init[6] = 0;
+#endif
 	for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //clear final values and change to initial
 	Ass3.x[0] = 0;
 	Ass3.x[1] = 14;
@@ -71,10 +109,13 @@ int main(void) {
 	Ass3.x[3] = 2.5;
 	Ass3.x[4] = 0;
 	Ass3.x[5] = 0;
-
+#ifdef CONSTRAINED
+	Ass3.x[6] = 0;
+#endif
 	for (i = 0; i <= len-1; i++) E[i] = 0;
 
-	for (j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand() / 100000.0);
+	for (j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand() / 10000000.0);
+	
 	E[0] = evaluate(ptrAss3);
 	for (j = 0; j <= Ass3.ldims-1; j++) smplx[0][j] = Ass3.init[Ass3.ldims + j];
 
@@ -87,7 +128,8 @@ int main(void) {
 	for (i = 0; i <= 10000; i++) {
 		E_min = E[len - 1];
 		check = false;
-		for( j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand()/100000.0);
+		for( j = 0; j <= Ass3.ldims-1; j++) Ass3.init[Ass3.ldims + j] = (rand()/10000000.0);
+		
 		E_new = evaluate(ptrAss3);
 
 		if (E_new < E_min) {
@@ -96,7 +138,10 @@ int main(void) {
 			
 
 			for (k = 0; k <= len - 1; k++ ) {
-				if (E_new == E[k]) check = false;
+				if (E_new == E[k]) {
+					check = false;
+					break;
+				}
 				else check = true;
 			}
 			if (check) {
@@ -157,7 +202,13 @@ int main(void) {
 		Ass3.smplx[5][1] = 0;
 		Ass3.smplx[5][2] = 0;
 		Ass3.smplx[5][3] = 0;
-		Ass3.smplx[5][4] = 1;*/
+		Ass3.smplx[5][4] = 1;
+		
+		Ass3.smplx[6][0] = 0;
+		Ass3.smplx[6][1] = 0;
+		Ass3.smplx[6][2] = 0;
+		Ass3.smplx[6][3] = 0;
+		Ass3.smplx[6][4] = 1;*/
 
 
 		for (i = 0; i <= Ass3.dims - 1; i++) Ass3.init[i] = 0; //initialization variables
@@ -167,6 +218,9 @@ int main(void) {
 		Ass3.init[3] = 2.5;
 		Ass3.init[4] = 0;
 		Ass3.init[5] = 0;
+#ifdef CONSTRAINED
+		Ass3.init[6] = 0;
+#endif
 		for (i = 0; i <= Ass3.dims - 1; i++) Ass3.x[i] = 0; //clear final values and change to initial
 		Ass3.x[0] = 0;
 		Ass3.x[1] = 14;
@@ -174,19 +228,22 @@ int main(void) {
 		Ass3.x[3] = 2.5;
 		Ass3.x[4] = 0;
 		Ass3.x[5] = 0;
+#ifdef CONSTRAINED
+		Ass3.x[6] = 0;
+#endif
 
 		//RK(Ass3);
 		//Err(x);
 		MinFunc(ptrAss3);
 		cout << "Initial values:" << endl;
-		cout << "\nx0 = " << ptrAss3->init[0] << "\tx1 = " << ptrAss3->init[1]
-			<< endl;
+		cout << "x1 = " << ptrAss3->init[0] << "\tx2 = " << ptrAss3->init[1] << "\tx3 = " << ptrAss3->init[2] << "\tx4 = " << ptrAss3->init[3] << "\tx5 = " << ptrAss3->init[4] << "\tx6 = " << ptrAss3->init[5]
+			<< "\n" << endl;
 
 		cout << endl;
 
 		cout << "Final values:" << endl;
-		cout << "\nx0 = " << ptrAss3->x[0] << "\tx1 = " << ptrAss3->x[1]
-			<< endl;
+		cout << "x1 = " << ptrAss3->x[0] << "\tx2 = " << ptrAss3->x[1] << "\tx3 = " << ptrAss3->x[2] << "\tx4 = " << ptrAss3->x[3] << "\tx5 = " << ptrAss3->x[4] << "\tx6 = " << ptrAss3->x[5]
+			<< "\n" << endl;
 
 		ptrAss3->ctrl0 = 0;
 		ptrAss3->ctrl1 = 0;
@@ -194,13 +251,13 @@ int main(void) {
 		RKf(ptrAss3);
 
 		cout << "Initial values:" << endl;
-		cout << "phi = " << ptrAss3->init[0] << "\tphidot = " << ptrAss3->init[1] << "\tx = " << ptrAss3->init[2] << "\txdot = " << ptrAss3->init[3] << "\tF = " << ptrAss3->init[4]
+		cout << "x1 = " << ptrAss3->init[0] << "\tx2 = " << ptrAss3->init[1] << "\tx3 = " << ptrAss3->init[2] << "\tx4 = " << ptrAss3->init[3] << "\tx5 = " << ptrAss3->init[4] << "\tx6 = " << ptrAss3->init[5]
 			<< "\n" << endl;
 
 		cout << endl;
 
 		cout << "Final values:" << endl;
-		cout << "phi = " << ptrAss3->x[0] << "\tphidot = " << ptrAss3->x[1] << "\tx = " << ptrAss3->x[2] << "\txdot = " << ptrAss3->x[3] << "\tF = " << ptrAss3->init[4]
+		cout << "x1 = " << ptrAss3->x[0] << "\tx2 = " << ptrAss3->x[1] << "\tx3 = " << ptrAss3->x[2] << "\tx4 = " << ptrAss3->x[3] << "\tx5 = " << ptrAss3->x[4] << "\tx6 = " << ptrAss3->x[5]
 			<< "\n" << endl;
 
 		cout << "Error:" << endl;
