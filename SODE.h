@@ -1,5 +1,7 @@
 #pragma once
 #define CONSTRAINED
+#define CONTINUOUS
+#define pi 3.14159265359
 class SODE
 {
 public:

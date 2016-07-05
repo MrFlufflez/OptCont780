@@ -44,7 +44,7 @@ void RKf(SODE *Ass3) {
 	for (i = 0; i <= Ass3->dims - 1; i++)	Ass3->dx[i] = 0;
 	for (i = 0; i <= Ass3->dims - 1; i++)	xsum[i] = Ass3->init[i];
 
-	res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl0 * Ass3->ctrl0); //TODO
+	res = res + (Ass3->h * Ass3->x[2] * Ass3->x[2] + Ass3->h * Ass3->x[5] * Ass3->x[5] + 0.005 * Ass3->h * Ass3->ctrl0 * Ass3->ctrl0 + 0.005 * Ass3->h * Ass3->ctrl1 * Ass3->ctrl1); //TODO
 
 	n = int((Ass3->t1 - Ass3->t0) / Ass3->h);
 	for (i = 0; i <= Ass3->dims-1; i++)	Ass3->x[i] = Ass3->init[i];
@@ -58,7 +58,7 @@ void RKf(SODE *Ass3) {
 	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
 #endif
 #ifdef CONSTRAINED
-	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->ctrl0, Ass3->ctrl1);
+	fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->x[7], Ass3->x[8], Ass3->x[9], Ass3->x[10], Ass3->x[11], Ass3->x[12], Ass3->x[13], Ass3->ctrl0, Ass3->ctrl1);
 #endif
 	for (i = 1; i <= n; i++) {
 	//	cout << "t = " << t << "\nx0 = " << Ass3->x[0] << "\tx1 = " << Ass3->x[1] << "\tx2 = " << Ass3->x[2] 
@@ -104,12 +104,12 @@ void RKf(SODE *Ass3) {
 		}
 		
 		t = t + Ass3->h;
-		res = res + 0.5*(Ass3->h * Ass3->x[0] * Ass3->x[0] + Ass3->h * Ass3->ctrl0 * Ass3->ctrl0); //TODO
+		res = res + (Ass3->h * Ass3->x[2] * Ass3->x[2] + Ass3->h * Ass3->x[5] * Ass3->x[5] + 0.005 * Ass3->h * Ass3->ctrl0 * Ass3->ctrl0 + 0.005 * Ass3->h * Ass3->ctrl1 * Ass3->ctrl1);
 #ifndef CONSTRAINED
 		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->ctrl0, Ass3->ctrl1);
 #endif
 #ifdef CONSTRAINED
-		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->ctrl0, Ass3->ctrl1);
+		fprintf(cfptr, "%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g \n", t, Ass3->x[0], Ass3->x[1], Ass3->x[2], Ass3->x[3], Ass3->x[4], Ass3->x[5], Ass3->x[6], Ass3->x[7], Ass3->x[8], Ass3->x[9], Ass3->x[10], Ass3->x[11], Ass3->x[12], Ass3->x[13], Ass3->ctrl0, Ass3->ctrl1);
 #endif
 		
 	}
